@@ -9,16 +9,22 @@
 </head>
 <body>
 <header class="index-header">
-    <h1 class="websit-name">杜晓卿的个人博客</h1>
+    <h1 class="websit-name">博客系统</h1>
     <div class="user-wrapper">
         <img src="" alt="">
-        <span>用户xxx</span>
+        <span>开发阶段</span>
     </div>
 </header>
 <section class="index-body">
     <div class="right-section">
     </div>
     <div class="left-section">
+        {% if userInfo._id %}
+        <div class="user-box">
+            <div class="name">欢迎，<strong id="name">{{userInfo.username}}</strong></div>
+            <a href="javascript:;" id="logout">退出</a>
+        </div>
+        {% else %}
         <div class="register-box">
             <h1 class="box-title">注册</h1>
             <div class="form-row">
@@ -53,8 +59,10 @@
                 <input type="password" name="password" id="login-password"/>
             </div>
 
-            <button class="register-btn">登陆</button>
+            <button class="login-btn">登陆</button>
+            <p class="prompt-register">还没有注册？<a href="javascript:;" id="show-register-box">注册</a></p>
         </div>
+        {% endif %}
 
     </div>
 </section>

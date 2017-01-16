@@ -6,6 +6,7 @@ var swig = require("swig");
 var mongoose = require("mongoose");
 //用来处理post提交的数据
 var bodyParser = require('body-parser');
+var cookies = require("cookies");
 
 //app = >  http.createServer();
 var app = express();
@@ -24,6 +25,21 @@ app.set("view engine",'html');
 swig.setDefaults({cache:false});
 //会在req上保存一个body属性
 app.use(bodyParser.urlencoded({extended:true}));
+//设置cookies
+app.use(function(req,res,next){
+    req.cookies = new cookies(req,res);
+
+    //cookies就是一个对象，所有要记录的都挂载在上面
+    console.log(req.cookies.get("userInfo"));  //注意返回的是String
+
+    req.userInfo = {};
+    if(req.cookies.get("userInfo")){
+        try{
+            req.userInfo = JSON.parse(req.cookies.get("userInfo"));
+        }catch (e){}
+    }
+    next();
+});
 
 //根据功能进行模块划分
 app.use('/admin',require('./routers/admin'));

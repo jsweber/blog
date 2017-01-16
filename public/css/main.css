@@ -8,15 +8,22 @@
 .right-section{-webkit-flex:1;;flex:1;height:700px;background:#ccc;}
 .left-section{-webkit-flex:0 0 300px;;flex:0 0 300px;height:700px;}
 
-.register-box,.login-box{font-size:20px;min-width:300px;border-left:1px solid blue;background:#ccc;padding-top:20px;padding-bottom:20px;height:200px;}
+.register-box,.login-box,.user-box{font-size:20px;min-width:300px;border-left:1px solid blue;background:#ccc;padding-top:20px;padding-bottom:20px;height:200px;}
 .box-title{margin-bottom:10px;font-size:20px;text-align: center;font-weight: bold;}
 .form-row{padding-left:10px;position: relative;font-size: 0px;margin-bottom:10px;}
 .form-row *{font-size:14px;display:inline-block;}
 .form-row label{width:70px;vertical-align: top;}
 .form-row input{width:180px;vertical-align: top;margin-left:15px;}
-.register-btn{display:block;width:60px;line-height: 20px;margin:0 auto;font-size:14px;}
+.register-btn,.login-btn{display:block;width:60px;line-height: 20px;margin:0 auto;font-size:14px;}
+#logout{font-size:16px;color:blue;display:block;width:50px;text-align: center;line-height: 20px;margin:10px auto 0;}
 
-.login-box{display:none;}
+.register-box{display:none;}
+.login-box{}
+.user-box{}
+.user-box .name{text-align: center;font-size:16px;}
+.user-box .name strong{color:#c0a16b;}
+.prompt-register{font-size:12px;text-align: center;}
+.prompt-register a{color:#b4b472;}
 
 /* 公共样式 */
 .message-toast{line-height: 18px;font-size:14px;padding:15px 0;text-align: center;display:block;color:#a47e3c;}

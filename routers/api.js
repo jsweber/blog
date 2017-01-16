@@ -80,4 +80,47 @@ router.post("/user/register",function (req,res,next) {
 
 });
 
+router.post("/user/login",function (req,res,next) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    if(username == "" || password == ""){
+        responseData.code = 1;
+        responseData.message = "用户名或者密码不能为空";
+        res.json(responseData);
+        return;
+    }
+
+    User.findOne({
+        username:username,
+        password:password
+    }).then(function(userInfo){
+        if(!userInfo){
+            responseData.code = 2;
+            responseData.message = "用户名或者密码错误";
+            res.json(responseData);
+            return;
+        }
+
+        responseData.message = "登陆成功";
+        responseData.userInfo={
+            _id:userInfo._id,
+            username:userInfo.username
+        };
+        req.cookies.set('userInfo',JSON.stringify({
+            _id:userInfo._id,
+            username:userInfo.username
+        }));
+        res.json(responseData);
+        return;
+    });
+
+});
+
+//退出
+router.get("/user/logout",function (req,res) {
+    req.cookies.set("userInfo",null);
+    res.json(responseData);
+});
+
 module.exports = router;

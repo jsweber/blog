@@ -5,7 +5,9 @@ var express = require('express');
 var router = express.Router();
 
 router.get("/index",function (req,res,next) {
-    res.render("main/index");
+    res.render("main/index",{
+        userInfo:req.userInfo
+    });
 });
 
 module.exports = router;
