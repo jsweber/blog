@@ -1,0 +1,22 @@
+.index-header{min-width:960px;height:80px;border-bottom:1px solid #ccc;position: relative;overflow: hidden;}
+.websit-name{display:inline-block;font-size:25px;margin-left:20%;float:left;line-height: 80px;}
+.user-wrapper{float:right;height:80px;margin-right:20%;display:table;}
+.user-wrapper span{display:table-cell;vertical-align: middle;font-size:18px;}
+
+
+.index-body{display:flex;display:-webkit-flex;}
+.right-section{-webkit-flex:1;;flex:1;height:700px;background:#ccc;}
+.left-section{-webkit-flex:0 0 300px;;flex:0 0 300px;height:700px;}
+
+.register-box,.login-box{font-size:20px;min-width:300px;border-left:1px solid blue;background:#ccc;padding-top:20px;padding-bottom:20px;height:200px;}
+.box-title{margin-bottom:10px;font-size:20px;text-align: center;font-weight: bold;}
+.form-row{padding-left:10px;position: relative;font-size: 0px;margin-bottom:10px;}
+.form-row *{font-size:14px;display:inline-block;}
+.form-row label{width:70px;vertical-align: top;}
+.form-row input{width:180px;vertical-align: top;margin-left:15px;}
+.register-btn{display:block;width:60px;line-height: 20px;margin:0 auto;font-size:14px;}
+
+.login-box{display:none;}
+
+/* 公共样式 */
+.message-toast{line-height: 18px;font-size:14px;padding:15px 0;text-align: center;display:block;color:#a47e3c;}
