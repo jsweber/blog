@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>首页</title>
+    <link rel="stylesheet" href="/public/css/reset.css">
+    <link rel="stylesheet" href="/public/css/main.css">
+    <script src="/public/js/jquery-1.12.4.min.js"></script>
+    <script src="/public/js/toast.js"></script>
+</head>
+<body>
+<header class="index-header">
+    <h1 class="websit-name">博客系统</h1>
+    <div class="user-wrapper">
+        <img src="" alt="">
+        <span>开发阶段</span>
+    </div>
+</header>
+<nav class="nav-tab">
+    <a href="/index">首页</a>
+    {% for category in categories %}
+    <a href="/index?category={{category.id}}">{{category.name}}</a>
+    {% endfor %}
+</nav>
+<section class="index-body">
+    <div class="right-section">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="left-section">
+        {% if userInfo._id %}
+        <div class="user-box">
+            {% if userInfo.isAdmin %}
+            <div class="name">欢迎，管理员<strong id="admin-name">{{userInfo.username}}</strong></div>
+            <a href="/admin/" class="go-manage">进入管理页面</a>
+            <a href="javascript:;" id="admin-logout">退出</a>
+            {% else %}
+            <div class="name">欢迎<strong id="name">{{userInfo.username}}</strong></div>
+            <a href="javascript:;" id="logout">退出</a>
+
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="register-box">
+            <h1 class="box-title">注册</h1>
+            <div class="form-row">
+                <label for="username">用户名：</label>
+                <input type="text" name="username" id="username"/>
+            </div>
+
+            <div class="form-row">
+                <label for="password">密码：</label>
+                <input type="password" name="password" id="password"/>
+            </div>
+
+            <div class="form-row">
+                <label for="repassword">重复密码：</label>
+                <input type="password" name="password" id="repassword"/>
+            </div>
+
+            <button class="register-btn">注册</button>
+
+            <div class="message-toast"></div>
+        </div>
+
+        <div class="login-box">
+            <h1 class="box-title">登陆</h1>
+            <div class="form-row">
+                <label for="login-username">用户名：</label>
+                <input type="text" name="username" id="login-username"/>
+            </div>
+
+            <div class="form-row">
+                <label for="login-password">密码：</label>
+                <input type="password" name="password" id="login-password"/>
+            </div>
+
+            <button class="login-btn" type="button">登陆</button>
+            <p class="prompt-register">还没有注册？<a href="javascript:;" id="show-register-box">注册</a></p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+<script src="/public/js/index.js"></script>
+</body>
+</html>

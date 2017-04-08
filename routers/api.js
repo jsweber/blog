@@ -4,6 +4,23 @@
 var express = require('express');
 var router = express.Router();
 var User = require("../models/User");
+var Content = require("../models/Content");
+var Category = require("../models/Category");
+var Tools = require("../lib/Tools");
+
+var common_data = {};
+
+router.use(function (req,res,next) {
+    common_data = {
+        userInfo:req.userInfo,
+        categories:[]
+    };
+    Category.find().then(function (categories) {
+        // categories是读取数据库返回的数组对象
+        common_data.categories = categories;
+        next();
+    });
+});
 
 //统一返回格式
 var responseData;
@@ -121,6 +138,51 @@ router.post("/user/login",function (req,res,next) {
 router.get("/user/logout",function (req,res) {
     req.cookies.set("userInfo",null);
     res.json(responseData);
+});
+
+//评论
+router.post('/comment/post',function(req,res){
+    var contentId = req.body.contentId || "";
+    var postData={
+        username:req.userInfo.username,
+        postTime:new Date(),
+        content:req.body.content || "",
+    };
+
+    Content.findOne({
+        _id:contentId
+    }).then(function(content){
+        content.comments.push(postData);
+        return content.save();
+    }).then(function (newContent) {
+        responseData.message = "提交成功";
+        responseData.data = newContent;
+        res.json(responseData);
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
+
+router.get("/comment/list",function (req,res) {
+
+    var data = {
+        limit: Number(req.query.limit || 3),
+        page:req.query.page || 1
+    };
+
+    Tools.clone(data,common_data);
+
+    Content.findOne({
+        _id:req.query.content
+    }).then(function (content) {
+        data.pages = Math.ceil(content.comments.length/data.limit);
+        data.page = Math.max(1,Math.min(data.page,data.pages));
+        data.skip = data.limit*(data.page - 1);
+        data.comments = content.comments.reverse().slice(data.skip,data.skip+data.limit);
+        data.content = content;
+        res.render('main/view',data);
+    });
+
 });
 
 module.exports = router;

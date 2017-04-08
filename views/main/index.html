@@ -1,74 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>首页</title>
-    <link rel="stylesheet" href="/public/css/reset.css">
-    <link rel="stylesheet" href="/public/css/main.css">
-</head>
-<body>
-<header class="index-header">
-    <h1 class="websit-name">博客系统</h1>
-    <div class="user-wrapper">
-        <img src="" alt="">
-        <span>开发阶段</span>
-    </div>
-</header>
-<section class="index-body">
-    <div class="right-section">
-    </div>
-    <div class="left-section">
-        {% if userInfo._id %}
-        <div class="user-box">
-            <div class="name">欢迎，<strong id="name">{{userInfo.username}}</strong></div>
-            <a href="javascript:;" id="logout">退出</a>
+{% extends 'layout.html' %}
+
+{% block content %}
+<ul class="contnt-list">
+    {% for content in contents %}
+    <li class="content-item">
+        <h3>{{content.title}}</h3>
+        <div class="content-info">
+            <span>作者：</span>
+            <span class="color-blue">{{content.user.username}}</span>-
+            <span>时间：</span>
+            <span class="color-blue">{{content.addTime|date("Y年m月d日H:i:s",-8*60)}}</span>-
+            <span>阅读：</span>
+            <span class="color-blue">{{content.views}}</span>-
+            <span>评论：</span>
+            <span class="color-blue">{{content.comments.length}}</span>
         </div>
-        {% else %}
-        <div class="register-box">
-            <h1 class="box-title">注册</h1>
-            <div class="form-row">
-                <label for="username">用户名：</label>
-                <input type="text" name="username" id="username"/>
-            </div>
+        <div class="content-description">{{content.description}}</div>
+        <button ><a href="/view?content={{content._id.toString()}}">阅读全部</a></button>
+    </li>
+    {% endfor %}
+</ul>
+<div class="turn-page">
+    {% if pages < 1 %}
 
-            <div class="form-row">
-                <label for="password">密码：</label>
-                <input type="password" name="password" id="password"/>
-            </div>
-
-            <div class="form-row">
-                <label for="repassword">重复密码：</label>
-                <input type="password" name="password" id="repassword"/>
-            </div>
-
-            <button class="register-btn">注册</button>
-
-            <div class="message-toast"></div>
-        </div>
-
-        <div class="login-box">
-            <h1 class="box-title">登陆</h1>
-            <div class="form-row">
-                <label for="login-username">用户名：</label>
-                <input type="text" name="username" id="login-username"/>
-            </div>
-
-            <div class="form-row">
-                <label for="login-password">密码：</label>
-                <input type="password" name="password" id="login-password"/>
-            </div>
-
-            <button class="login-btn">登陆</button>
-            <p class="prompt-register">还没有注册？<a href="javascript:;" id="show-register-box">注册</a></p>
-        </div>
-        {% endif %}
-
-    </div>
-</section>
+    {% else %}
+    {{page+'/'+ pages}}
+    {%endif%}
 
 
-<script src="/public/js/jquery-1.12.4.min.js"></script>
-<script src="/public/js/index.js"></script>
-</body>
-</html>
+    {% if page <= 1 %}
+    <span class="prev-btn color-grey">没有上一页</span>
+    {% else %}
+    <a href="/index?page={{page-1}}&category={{category}}" class="prev-btn">上一页</a>
+    {% endif %}
+
+    {% if page >= pages %}
+    <span class="next-btn color-grey">没有下一页</span>
+    {% else %}
+    <a href="/index?page={{page+1}}&category={{category}}" class="next-btn">下一页</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -10,6 +10,8 @@ var cookies = require("cookies");
 
 //app = >  http.createServer();
 var app = express();
+
+var User = require("./models/User");
 //设置静态文件托管，当用户访问的url以/public开始直接返回__dirname+"/public"下对应的文件
 app.use('/public',express.static(__dirname+"/public"));
 //console.log(__dirname); //\code\nodejs\blog
@@ -30,15 +32,23 @@ app.use(function(req,res,next){
     req.cookies = new cookies(req,res);
 
     //cookies就是一个对象，所有要记录的都挂载在上面
-    console.log(req.cookies.get("userInfo"));  //注意返回的是String
+    //console.log(req.cookies.get("userInfo"));  //注意返回的是String
 
     req.userInfo = {};
     if(req.cookies.get("userInfo")){
         try{
             req.userInfo = JSON.parse(req.cookies.get("userInfo"));
-        }catch (e){}
+
+            User.findById(req.userInfo._id).then(function (userInfo) {
+                req.userInfo.isAdmin = Boolean(userInfo.isAdmin);  //获取的都是字符串
+                next();
+            });
+        }catch (e){
+            next();
+        }
+    }else{
+        next();
     }
-    next();
 });
 
 //根据功能进行模块划分

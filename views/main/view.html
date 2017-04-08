@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h3>{{content.title}}</h3>
+    <div class="content-info">
+        <span>作者：</span>
+        <span class="color-blue">{{content.user.username}}</span>-
+        <span>时间：</span>
+        <span class="color-blue">{{content.addTime|date("Y年m月d日H:i:s",-8*60)}}</span>-
+        <span>阅读：</span>
+        <span class="color-blue">{{content.views}}</span>-
+        <span>评论：</span>
+        <span class="color-blue">10</span>
+    </div>
+    <div class="content-description">概要：{{content.description}}</div>
+    <div class="content-text">{{content.content}}</div>
+</div>
+
+<div class="comment-wrapper">
+    <div class="title">
+        <strong>评论</strong>
+        <span>一共{{pages}}条评论</span>
+    </div>
+    {% if userInfo._id %}
+    <div class="comment-text">
+        <div class="name">{{userInfo.username}}</div>
+        <div class="text-btn clearfix">
+            <textarea name="content" id="text" rows="10"></textarea>
+            <input type="hidden" id="contentId" name="contentId" value="{{content._id.toString()}}">
+            <button id="submit-btn">提交</button>
+        </div>
+    </div>
+    {%else%}
+    <div class="login-first">
+        <a href="javascript:;">请先登陆</a>
+    </div>
+    {%endif%}
+
+    {% if content.comments.length %}
+    <ul class="comment-list">
+        {% for comment in comments %}
+        <li>
+            <div class="comment-item"><strong>{{comment.username}}</strong><span>{{comment.postTime | date("Y年m月d日H:i:s",-8*60)}}</span></div>
+            <div class="item-content">{{comment.content}}</div>
+        </li>
+        {% endfor %}
+    </ul>
+    <nav class="btn-wrapper">
+        <a href="/view?content={{content._id.toString()}}&page={{page-1}}&limit={{limit}}" class="previous">上一页</a>
+        当前{{page}}/总共{{pages}}
+        <a href="/view?content={{content._id.toString()}}&page={{page+1}}&limit={{limit}}" class="next">下一页</a>
+    </nav>
+
+    {%else%}
+    <div class="no-comments">快来抢沙发！</div>
+    {%endif%}
+</div>
+<script src="/public/js/comment.js"></script>
+{% endblock %}
